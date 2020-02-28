@@ -8,8 +8,9 @@ import "sync"
 type ArrayStack struct {
 	data []interface{}
 	top  int
-	//considering the concurrent, introduce the RWMutex
-	rwLock sync.RWMutex
+	//considering the concurrent, introduce the Mutex
+	//also can use RWMutx according to the contax
+	lock sync.Mutex
 }
 
 //NewArrayStack constructor
@@ -17,16 +18,23 @@ func NewArrayStack() *ArrayStack {
 	return &ArrayStack{
 		data: make([]interface{}, 0, 32),
 		top:  -1,
+		lock: sync.Mutex{},
 	}
 }
 
 //IsEmpty return true is the stack is empty
 func (as *ArrayStack) IsEmpty() bool {
+	as.lock.Lock()
+	defer as.lock.Unlock()
+
 	return as.top < 0
 }
 
 //Push stack push
 func (as *ArrayStack) Push(item interface{}) {
+	as.lock.Lock()
+	defer as.lock.Unlock()
+
 	if as.top < 0 {
 		as.top = 0
 	} else {
@@ -42,6 +50,9 @@ func (as *ArrayStack) Push(item interface{}) {
 
 //Pop stack pop
 func (as *ArrayStack) Pop() interface{} {
+	as.lock.Lock()
+	defer as.lock.Unlock()
+
 	if as.IsEmpty() {
 		return nil
 	}
@@ -54,6 +65,9 @@ func (as *ArrayStack) Pop() interface{} {
 
 //Top stack top
 func (as *ArrayStack) Top() interface{} {
+	as.lock.Lock()
+	defer as.lock.Unlock()
+
 	if as.IsEmpty() {
 		return nil
 	}
@@ -62,5 +76,8 @@ func (as *ArrayStack) Top() interface{} {
 
 //Flush stack flush
 func (as *ArrayStack) Flush() {
+	as.lock.Lock()
+	defer as.lock.Unlock()
+
 	as.top = -1
 }
