@@ -35,3 +35,11 @@ func (aq *QueueOnArray) DeQ() *interface{} {
 	aq.head = (aq.head + 1) % aq.capactity
 	return &v
 }
+
+func (aq *QueueOnArray) IsEmpty() bool {
+	return aq.head == aq.tail
+}
+
+func (aq *QueueOnArray) Size() int {
+	return (aq.tail + aq.capactity - aq.head) % aq.capactity
+}
