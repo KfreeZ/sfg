@@ -14,43 +14,24 @@ void  _r(char ** s, int length) {
     return;
 }
 
-void trimSpace(char ** s) {
-    //去除多余空格
-    char *str = *s;
-    //去除首部空格
-    while(*str != '\0') {
-        if (*str != ' ') {
-            *s = str;
-            break;
+void trimSpace(char ** s, int originLen) {
+    int slowOffset = 0;
+    int fastOffset = 0;
+
+    while (fastOffset < originLen) {
+        while (fastOffset < originLen && *(*s+fastOffset) == ' ') fastOffset++;
+        while (fastOffset < originLen && *(*s+fastOffset) != ' ') {
+            *(*s+slowOffset) = *(*s+fastOffset);
+            slowOffset++;
+            fastOffset++;
         }
-        str++;
+        while (fastOffset < originLen && *(*s+fastOffset) == ' ') fastOffset++;
+        if (fastOffset < originLen) {
+            *(*s+slowOffset) = ' '; 
+            slowOffset++;
+        }    
     }
-    str = *s;
-    int i,j;
-    i = 0;
-    j = 0;
-    //去除中间或尾部空格
-    while(*(str+i) != '\0') {
-        if (*(str+j) == ' ') {
-            if (*(str+j+1) == ' ') {
-                j++;
-                continue;
-            } else if (*(str+j+1) == '\0' ) {
-                //去掉尾部空格
-                *(str+i) = '\0';
-                break;
-            }
-        } else if (*(str+j) == '\0' ) {
-                //去掉尾部空格
-                *(str+i) = '\0';
-                break;
-        } 
-        if (*(str+i) != *(str+j)) {
-            *(str+i) = *(str+j);
-        }
-        i++;
-        j++; 
-    }
+    *(*s+slowOffset) ='\0';
 }
 
 
@@ -59,8 +40,8 @@ char * reverseWords(char * s){
         return NULL;
     }
 
-    trimSpace(&s);
-    cout << "trim:" << s << endl;
+
+    cout << "orig:" << s << "|" << endl;
     int length = 0;
     char* tail = s;
     while (*tail != '\0') {
@@ -84,6 +65,8 @@ char * reverseWords(char * s){
         }
     }
 
+    trimSpace(&s, length);
+    cout << "trim:" << s << "|" << endl;
     return s;
 }
 
