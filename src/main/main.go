@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"heap"
 	"stack"
+	"stringutils"
 )
 
 func main() {
@@ -12,8 +14,27 @@ func main() {
 	as := stack.NewArrayStack()
 	as.IsEmpty()
 
-	arr := []int{0, 0, 1, 2, 4, 2, 2, 3, 1, 4}
-	getLeastNumbers(arr, 8)
+	if false {
+
+		rets := stringutils.CompressString("aabcccccaa")
+		fmt.Print(rets)
+
+		fmt.Print(stringutils.LengthOfLongestSubstring("pwwkew"))
+
+		words := []string{"hello", "world", "leetcode"}
+		chars := "welldonehoneyr"
+		fmt.Print(stringutils.CountCharacters(words, chars))
+
+		stringutils.MyAtoi(" ")
+
+		arr := []int{3, 2, 1}
+		fmt.Println(heap.GetLeastNumbers(arr, 2))
+		arr = []int{0, 1, 2, 1}
+		fmt.Println(heap.GetLeastNumbers(arr, 1))
+
+		arr = []int{0, 0, 1, 2, 4, 2, 2, 3, 1, 4}
+		getLeastNumbers(arr, 8)
+	}
 }
 
 func getLeastNumbers(arr []int, k int) []int {
@@ -70,4 +91,5 @@ func swap(arr []int, i int, j int) {
 	t := arr[i]
 	arr[i] = arr[j]
 	arr[j] = t
+
 }
