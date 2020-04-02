@@ -33,4 +33,6 @@ func main() {
 		fmt.Println(heap.GetLeastNumbers(arr, 1))
 	}
 
+	fmt.Println(stringutils.IsValid("["))
+
 }

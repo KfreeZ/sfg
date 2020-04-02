@@ -285,3 +285,107 @@ func CountCharacters(words []string, chars string) int {
 	return ret
 
 }
+
+func IsValid(s string) bool {
+	if len(s) == 0 {
+		return true
+	}
+
+	sLen := len(s)
+	mystack := newStack(sLen)
+
+	for idx := 0; idx < sLen; idx++ {
+
+		fmt.Println(s[idx], idx, sLen)
+		if s[idx] == '(' || s[idx] == '{' || s[idx] == '[' {
+			mystack.push(s[idx])
+			fmt.Println("push left")
+			continue
+		}
+		fmt.Println(mystack.peek())
+		if s[idx] == ')' {
+			if mystack.peek() == '(' {
+				mystack.pop()
+				fmt.Println("pop right ( ")
+				continue
+			} else {
+				return false
+			}
+		}
+
+		if s[idx] == ']' {
+			if mystack.peek() == '[' {
+				mystack.pop()
+				fmt.Println("pop right [ ")
+				continue
+			} else {
+				return false
+			}
+		}
+
+		if s[idx] == '}' {
+			if mystack.peek() == '{' {
+				mystack.pop()
+				fmt.Println("pop right { ")
+				continue
+			} else {
+				return false
+			}
+		}
+	}
+
+	return mystack.isEmpty()
+
+}
+
+type stack struct {
+	data     []byte
+	capacity int
+	top      int
+}
+
+func newStack(cap int) *stack {
+	return &stack{
+		data:     make([]byte, 0, cap),
+		capacity: cap,
+		top:      -1,
+	}
+}
+
+func (stk *stack) push(item byte) {
+	if stk.top == stk.capacity {
+		return
+	}
+	if stk.top < 0 {
+		stk.top = 0
+	} else {
+		stk.top++
+	}
+
+	if stk.top == len(stk.data) {
+		stk.data = append(stk.data, item)
+	} else {
+		stk.data[stk.top] = item
+	}
+}
+
+func (stk *stack) isEmpty() bool {
+	return stk.top < 0
+}
+
+func (stk *stack) peek() byte {
+	if stk.isEmpty() {
+		return 0
+	}
+	return stk.data[stk.top]
+}
+
+func (stk *stack) pop() byte {
+	if stk.isEmpty() {
+		return 0
+	}
+
+	v := stk.data[stk.top]
+	stk.top--
+	return v
+}
